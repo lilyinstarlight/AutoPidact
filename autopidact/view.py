@@ -5,6 +5,8 @@ class View(Gtk.Window):
 	def __init__(self, title, camera, interval=200):
 		Gtk.Window.__init__(self)
 		self.set_title(title)
+		self.set_size_request(640, 480)
+		self.set_resizable(False)
 		self.cam = camera
 		self.img = Gtk.Image()
 		self.add(self.img)
