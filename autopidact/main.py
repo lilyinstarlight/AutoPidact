@@ -4,7 +4,7 @@ from gi.repository import Gtk
 
 from autopidact import Camera, View
 
-view = View('Camera 0', Camera(0))
+view = View('Camera 0', Camera(0), 2000)
 view.connect('delete-event', Gtk.main_quit)
 view.show_all()
 
