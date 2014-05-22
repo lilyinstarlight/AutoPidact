@@ -1,18 +1,15 @@
-from RPi import GPIO
 import spi
-import time
 
-left = right = shooter = 0
+left = right = shooter = shoot = 0
 
 def init():
-	spi.openSPI(bits=24)
-	GPIO.setup(4, GPIO.OUT)
+	spi.openSPI(bits=32)
 
 def deinit():
 	spi.closeSPI()
 
 def transfer():
-	spi.transfer((left, right, shooter))
+	spi.transfer((left, right, shooter, shoot))
 
 def left(pwm):
 	global left
@@ -29,7 +26,7 @@ def shooter(pwm):
 	shooter = pwm
 	transfer()
 
-def shoot():
-	GPIO.output(4, GPIO.HIGH)
-	time.sleep(2)
-	GPIO.output(4, GPIO.LOW)
+def shoot(pwm):
+	global shoot
+	shoot = pwm
+	transfer()
