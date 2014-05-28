@@ -1,32 +1,32 @@
-import spi
+from RPi import GPIO
 
-left = right = shooter = shoot = 0
+left_io = [ 8, 10, 12 ]
+right_io = [ 16, 18, 22 ]
+shooter_io = [ 24, 26, 7 ]
+shoot_io = [ 11 ]
+
+io = left_io + right_io + shooter_io + shoot_io
 
 def init():
-	spi.openSPI(bits=32)
+	GPIO.setmode(GPIO.BOARD)
+	for io_pin in io:
+		GPIO.setup(io_pin, GPIO.OUT)
 
-def deinit():
-	spi.closeSPI()
-
-def transfer():
-	spi.transfer((left, right, shooter, shoot))
+def motor(pwm, io):
+	for i in range(len(io)):
+		if pwm & (1 << i):
+			GPIO.output(io[i], GPIO.HIGH)
+		else:
+			GPIO.output(io[i], GPIO.LOW)
 
 def left(pwm):
-	global left
-	left = pwm
-	transfer()
+	motor(pwm, left_io)
 
 def right(pwm):
-	global right
-	right = pwm
-	transfer()
+	motor(pwm, right_io)
 
 def shooter(pwm):
-	global shooter
-	shooter = pwm
-	transfer()
+	motor(pwm, shooter_io)
 
 def shoot(pwm):
-	global shoot
-	shoot = pwm
-	transfer()
+	motor(pwm, shoot_io)
